@@ -2,27 +2,10 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
+const { Customer, validateCustomer } = require('../models/customers');  //export object returned from this module has two properties customer and validateCustomer// object destructuring 
 
-const customerSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
-    },
-    isGold: {
-        type: Boolean,
-        default: false
-    },
-    phone: {
-        type: String,
-        required: true,
-        minlength: 11,
-        maxlength: 11
-    }
-});
 
-const Customer = mongoose.model("Customer", customerSchema);
+// this module only has routes, only one functionality to handle routes for customers
 
 router.get('/', async function (req, res) {
     try {
@@ -117,15 +100,4 @@ router.delete('/:id', async function (req, res) {
 });
 
 
-
-
-var validateCustomer = function (customer) {
-    const schema = {
-        name: Joi.string().min(5).max(50).required(),
-        phone: Joi.string().min(11).max(11).required(),
-        isGold: Joi.boolean()
-    }
-    let result = Joi.validate(customer, schema);
-    return result;
-};
 module.exports = router;
