@@ -32,7 +32,7 @@ router.get('/', async function (req, res) {
 router.post('/', async function (req, res) {
     // schema for our genre
     let schema = {
-        name: Joi.string().min(3).required()
+        name: Joi.string().min(5).max(50).required()
     }
     let result = Joi.validate(req.body, schema);
     if (result.error) {
@@ -55,11 +55,11 @@ router.put('/:id', async function (req, res) {
 
     // validate the genre that we are getting in the request body or request before updating database
     try {
-        // let result = validateGenre(req.body);
-        // if (result.error) {
-        //     res.status(400).send(result.error.message)
-        //     return
-        // }
+        let result = validateGenre(req.body);
+        if (result.error) {
+            res.status(400).send(result.error.message)
+            return
+        }
         const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
         if (!genre) {
             res.status(400)
@@ -105,10 +105,10 @@ router.get('/:id', async function (req, res) {
 // Helper Function
 var validateGenre = function (genre) {
     let schema = {
-        name: Joi.string().min(3).required
+        name: Joi.string().min(5).max(50).required()
     }
     let result = Joi.validate(genre, schema);
     return result;
-}
+};
 
 module.exports = router;
