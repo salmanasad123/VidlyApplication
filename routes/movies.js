@@ -112,3 +112,5 @@ router.delete('/:id', async function (req, res) {
         res.send(err.message);
     }
 });
+
+module.exports = router;

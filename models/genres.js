@@ -24,6 +24,6 @@ var validateGenre = function (genre) {
     return result;
 };
 
-module.exports.GenreSchema = GenreSchema;
+module.exports.GenreSchema = genreSchema;
 module.exports.Genre = Genre;
 module.exports.validateGenre = validateGenre;
