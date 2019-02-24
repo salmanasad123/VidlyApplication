@@ -38,4 +38,4 @@ var validateCustomer = function (customer) {
 // export Customer class and validateCustomer function
 
 module.exports.Customer = Customer;
-module.exports.validateCustomer = validateCustomer;
+module.exports.validateCustomer = validateCustomer;  

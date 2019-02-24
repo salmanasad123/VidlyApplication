@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const { Customer, validateCustomer } = require('../models/customers');  //export object returned from this module has two properties customer and validateCustomer// object destructuring 
+const { Customer, validateCustomer } = require('../models/customers');  //export object returned from this module has two properties customer and validateCustomer   // object destructuring 
 
 
 // this module only has routes, only one functionality to handle routes for customers
