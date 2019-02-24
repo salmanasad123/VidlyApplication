@@ -96,3 +96,19 @@ router.put('/:id', async function (req, res) {
         res.send(err.message);
     }
 });
+
+router.delete('/:id', async function (req, res) {
+    try {
+
+        const movie = await Movie.findById(req.params.id);
+        if (!movie) {
+            res.status(400).message("The movie with the given id was not found");
+            return;
+        }
+        let deletedMovie = await movie.remove();
+        res.status(200).send(deletedMovie);
+
+    } catch (err) {
+        res.send(err.message);
+    }
+});
