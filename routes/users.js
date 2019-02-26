@@ -1,9 +1,11 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const lodash = require('lodash');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const { User, validateUser } = require('../models/user');
+
 
 router.post('/', async function (req, res) {
     try {
@@ -31,11 +33,17 @@ router.post('/', async function (req, res) {
         user.password = await bcrypt.hash(user.password, salt);
 
         user = await user.save();
-        // we dont want to send the password to the user as a response so we use a library called lodash
 
+        // we assume that when user signs in for our application they are automatically logged in, when they create their account they are logged in
+
+        const token = user.generateAuthToken();
+
+        // we dont want to send the password to the user as a response so we use a library called lodash
         user = lodash.pick(user, ['_id', 'name', 'email'])
 
-        res.send(user);
+        // we send the token in the response header, so we set custom header with x- prefix, first argument is the header name and second is the header value
+
+        res.header('x-auth-token', token).send(user);
     } catch (err) {
         res.send(err.message);
     }

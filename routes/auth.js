@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const lodash = require('lodash');
@@ -5,6 +6,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models/user');
+const config = require('config');
 
 router.post('/', async function (req, res) {
     try {
@@ -28,7 +30,12 @@ router.post('/', async function (req, res) {
             return;
         }
 
-        res.send(true);
+        // we need to send a json web token as a response, and the server say next time you want to come for any api end point or any resource bring that token along with you, Its like an Id 
+
+        // const token = jwt.sign({ _id: user._id }, "jwtPrivateKey");
+
+        const token = user.generateAuthToken();
+        res.send(token);
 
     } catch (err) {
         res.send(err.message);
