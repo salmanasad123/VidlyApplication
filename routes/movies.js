@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { Movie, validateMovies } = require('../models/movies');
 const { Genre } = require('../models/genres');
-
+const auth = require('../middleware/auth');
 
 router.get('/', async function (req, res) {
     try {
@@ -32,7 +32,7 @@ router.get('/:id', async function (req, res) {
     }
 });
 
-router.post('/', async function (req, res) {
+router.post('/', auth, async function (req, res) {
     try {
         let result = validateMovies(req.body);
         if (result.error) {
@@ -63,7 +63,7 @@ router.post('/', async function (req, res) {
 });
 
 
-router.put('/:id', async function (req, res) {
+router.put('/:id', auth, async function (req, res) {
     try {
         let result = validateMovies(req.body);
         if (result.error) {
@@ -97,7 +97,7 @@ router.put('/:id', async function (req, res) {
     }
 });
 
-router.delete('/:id', async function (req, res) {
+router.delete('/:id', auth, async function (req, res) {
     try {
 
         const movie = await Movie.findById(req.params.id);

@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const { Genre, validateGenre } = require('../models/genres');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 
 router.get('/', async function (req, res) {
@@ -16,8 +18,8 @@ router.get('/', async function (req, res) {
     }
 });
 
-
-router.post('/', async function (req, res) {
+// auth middleware function is executed before the aysnc middleware function which is route handler
+router.post('/', auth, async function (req, res) {
     // schema for our genre
     let schema = {
         name: Joi.string().min(5).max(50).required()
@@ -39,7 +41,7 @@ router.post('/', async function (req, res) {
 });
 
 
-router.put('/:id', async function (req, res) {
+router.put('/:id', auth, async function (req, res) {
 
     // validate the genre that we are getting in the request body or request before updating database
     try {
@@ -60,7 +62,8 @@ router.put('/:id', async function (req, res) {
     }
 });
 
-router.delete('/:id', async function (req, res) {
+// to execute middlware functions we put them in array
+router.delete('/:id', [auth, admin], async function (req, res) {
     try {
         let genre = await Genre.findById(req.params.id);
         if (!genre) {
